@@ -7,8 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "general.kafka-topic=test-topic",
+        "spring.kafka.consumer.group-id=test-group",
+        "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
+        "spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer",
+
+        // 👇 THIS IS THE NEW LINE TO FIX THE "trusted packages" ERROR
+        "spring.kafka.consumer.properties.spring.json.trusted.packages=*"
+})
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class TaskTwoTests {
