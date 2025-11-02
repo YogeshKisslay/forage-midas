@@ -1,5 +1,5 @@
 package com.jpmc.midascore.entity;
-
+import java.util.Set; // <-- Add this import
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +14,14 @@ public class UserRecord {
 
     @Column(nullable = false)
     private float balance;
+
+    // 👇 ADD THESE TWO FIELDS
+    @OneToMany(mappedBy = "sender")
+    private Set<TransactionRecord> sentTransactions;
+
+    @OneToMany(mappedBy = "recipient")
+    private Set<TransactionRecord> receivedTransactions;
+
 
     protected UserRecord() {
     }
