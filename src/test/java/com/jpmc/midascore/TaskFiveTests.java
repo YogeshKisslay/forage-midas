@@ -9,7 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
+        properties = {
+                "general.kafka-topic=test-topic",
+                "spring.kafka.consumer.group-id=test-group",
+                "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
+                "spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer",
+                "spring.kafka.consumer.properties.spring.json.trusted.packages=*",
+                "spring.kafka.consumer.max-poll-records=25",
+                "spring.kafka.listener.poll-timeout=100"
+        })
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 public class TaskFiveTests {
